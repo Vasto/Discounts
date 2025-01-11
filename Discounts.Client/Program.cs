@@ -1,28 +1,21 @@
-﻿// See https://aka.ms/new-console-template for more information
+using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
+using Discounts.Client;
 using Grpc.Net.Client;
-Console.WriteLine("Press 'q' to quit.");
+using Grpc.Net.Client.Web;
 
-//using var channel = GrpcChannel.ForAddress("https://localhost:7184");
+var builder = WebAssemblyHostBuilder.CreateDefault(args);
+builder.RootComponents.Add<App>("#app");
+builder.RootComponents.Add<HeadOutlet>("head::after");
 
-//var client = new Discounts.Client.Discounts.DiscountsClient(channel);
-
-//var response = client.GenerateCode(new Discounts.Client.GenerateCodeRequest { Count = 50, Length = 7 });
-
-//foreach (var code in response.Codes)
-//{
-//    Console.WriteLine(code);
-//}
-
-while (true)
+builder.Services.AddScoped(sp =>
 {
-    if (Console.KeyAvailable)
+    var channel = GrpcChannel.ForAddress("https://localhost:7184", new GrpcChannelOptions
     {
-        var key = Console.ReadKey(true);
-        if (key.Key == ConsoleKey.Q)
-        {
-            break;
-        }
-    }
+        HttpHandler = new GrpcWebHandler(GrpcWebMode.GrpcWeb, new HttpClientHandler())
+    });
+    var client = new Discounts.Client.Discounts.DiscountsClient(channel);
+    return client;
+});
 
-    await Task.Delay(1);
-}
+await builder.Build().RunAsync();

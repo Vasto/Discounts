@@ -1,0 +1,60 @@
+﻿@page "/generate-codes"
+
+@using Google.Protobuf.WellKnownTypes
+
+@inject Discounts.DiscountsClient Client;
+
+<PageTitle>Generate codes</PageTitle>
+
+<h1>Generate codes</h1>
+
+<p>This component demonstrates discount codes generation</p>
+
+<label class="me-2">Amount:</label><input type="number" @bind="count" min="1" max="2000" class="me-2" />
+<label class="me-2">Length:</label><input type="number" @bind="length" min="7" max="8" class="me-2" />
+<button class="btn btn-primary" @onclick="() => OnGenerateCodes(count, length)">Generate</button>
+
+@if (generating)
+{
+	<p>Generating codes...</p>
+}
+
+@if (_codes != null)
+{   
+    int i = 0;
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Value</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in _codes)
+            {
+                <tr>
+                    <td>@(++i)</td>
+                    <td>@item</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private bool generating = false;
+    private int count = 10;
+    private int length = 7;
+    private IEnumerable<string> _codes = null;
+
+    private async Task OnGenerateCodes(int count, int length)
+    {
+		generating = true;
+        var response = await Client.GenerateCodeAsync(new GenerateCodeRequest { Count = count, Length = length });
+        if (response.Result)
+		    _codes = response.Codes;
+
+		generating = false;
+    }
+}

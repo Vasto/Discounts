@@ -1,0 +1,46 @@
+﻿@page "/use-codes"
+
+@using Google.Protobuf.WellKnownTypes
+
+@inject Discounts.DiscountsClient Client;
+
+<PageTitle>Use codes</PageTitle>
+
+<h1>Use codes</h1>
+
+<p>This component allows to use a dsicount code</p>
+
+<label class="me-2">Code:</label>
+<input type="text" maxlength="8" @bind="codeValue" />
+<button class="btn btn-primary" @onclick="() => OnUseCode(codeValue)">Use</button>
+
+@if (responseCode.HasValue)
+{
+    switch (responseCode.Value)
+	{
+		case 0:
+			<p>Discount code was applied successfully</p>
+			break;
+		case 1:
+			<p>Discount code is invalid</p>
+			break;
+		case 2:
+			<p>Discount code already used</p>
+			break;
+		default:
+			<p>Something went wrong. Please try again.</p>
+			break;
+	}
+}
+
+@code {
+    private string codeValue = null;
+    private int? responseCode = null;
+
+    private async Task OnUseCode(string codeValue)
+    {
+        responseCode = null;
+        var response = await Client.UseCodeAsync(new UseCodeRequest { Code = codeValue });
+		responseCode = response.Result;
+    }
+}
