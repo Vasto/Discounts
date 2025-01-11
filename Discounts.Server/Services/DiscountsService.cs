@@ -5,13 +5,13 @@ namespace Discounts.Server.Services
 {
     public class DiscountsService : IDiscountsService
     {
-        private static readonly char[] _characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".ToCharArray();
-
+        private readonly ICodeGenerator _codeGenerator;
         private readonly ICodesRepository _codesRepository;
         private readonly ILogger<DiscountsService> _logger;
 
-        public DiscountsService(ICodesRepository codesRepository, ILogger<DiscountsService> logger)
+        public DiscountsService(ICodeGenerator codeGenerator, ICodesRepository codesRepository, ILogger<DiscountsService> logger)
         {
+            _codeGenerator = codeGenerator ?? throw new ArgumentNullException(nameof(codeGenerator));
             _codesRepository = codesRepository ?? throw new ArgumentNullException(nameof(codesRepository));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
@@ -24,7 +24,7 @@ namespace Discounts.Server.Services
             {
                 for (int i = 0; i < count; i++)
                 {
-                    var code = GenerateSingleRandomCode(length);
+                    var code = _codeGenerator.GenerateSingleCode(length);
                     var result = await _codesRepository.TryAddCode(code, CodeStatus.New);
                     if (!result)
                     {
@@ -93,8 +93,5 @@ namespace Discounts.Server.Services
 
             return CodeUsageStatus.Success;
         }
-
-        private string GenerateSingleRandomCode(int length) => new string(Enumerable.Repeat(_characters, length)
-                    .Select(s => s[Random.Shared.Next(s.Length)]).ToArray());
     }
 }
