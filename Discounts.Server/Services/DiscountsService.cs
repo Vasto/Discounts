@@ -77,7 +77,7 @@ namespace Discounts.Server.Services
                 }
                 else
                 {
-                    // mark as used, and set expiration so it is not generated again in some time
+                    // mark as used, and set expiration instead of deleting, so it is not repeated again for some time
                     var setResult = await _codesRepository.SetCodeStatus(code, CodeStatus.Used, TimeSpan.FromDays(30));
                     if (!setResult)
                     {
