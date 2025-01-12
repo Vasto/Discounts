@@ -17,16 +17,6 @@ namespace Discounts.Server.Controllers
         /// </summary>
         public override async Task<GenerateCodeResponse> GenerateCode(GenerateCodeRequest request, ServerCallContext context)
         {
-            if (request.Count <= 1 || request.Count > 2000)
-            {
-                return new GenerateCodeResponse { Result = false };
-            }
-
-            if (request.Length < 7 || request.Length > 8)
-            {
-                return new GenerateCodeResponse { Result = false };
-            }
-
             var generatedCodes = await _discountsService.GenerateCodes(request.Count, request.Length, context.CancellationToken);
             if (generatedCodes == null)
             {

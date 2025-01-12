@@ -18,6 +18,16 @@ namespace Discounts.Server.Services
 
         public async Task<IEnumerable<string>> GenerateCodes(int count, int length, CancellationToken cancellation)
         {
+            if (count <= 1 || count > 2000)
+            {
+                return null;
+            }
+
+            if (length < 7 || length > 8)
+            {
+                return null;
+            }
+
             bool hasGeneratedSuccessfully = true;
             var codes = new List<string>(count);
             try
