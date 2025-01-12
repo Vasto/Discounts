@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discounts.ServiceDefaults",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discounts.Client", "Discounts.Client\Discounts.Client.csproj", "{B1273256-D410-4FDC-8871-B2A20E857824}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discounts.UnitTests", "Discounts.UnitTests\Discounts.UnitTests.csproj", "{51C59D20-7B67-44C7-9A8E-9ABEC72952B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{B1273256-D410-4FDC-8871-B2A20E857824}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1273256-D410-4FDC-8871-B2A20E857824}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1273256-D410-4FDC-8871-B2A20E857824}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51C59D20-7B67-44C7-9A8E-9ABEC72952B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51C59D20-7B67-44C7-9A8E-9ABEC72952B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51C59D20-7B67-44C7-9A8E-9ABEC72952B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51C59D20-7B67-44C7-9A8E-9ABEC72952B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
